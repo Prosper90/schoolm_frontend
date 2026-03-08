@@ -1,0 +1,14 @@
+export { dashboardApi } from "./dashboard";
+export { studentsApi } from "./students";
+export { paymentsApi } from "./payments";
+export { classesApi } from "./classes";
+export { schoolsApi } from "./schools";
+export { staffApi } from "./staff";
+export { subjectsApi } from "./subjects";
+export { guardiansApi } from "./guardians";
+export { departmentsApi } from "./departments";
+export { attendanceApi } from "./attendance";
+export { examsApi } from "./exams";
+export { leaveApi } from "./leave";
+export { libraryApi } from "./library";
+export { accountsApi } from "./accounts";
