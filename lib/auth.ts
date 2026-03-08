@@ -30,7 +30,7 @@ export const authApi = {
   // Get current user profile
   getProfile: async (): Promise<User> => {
     const response = await api.get<AuthResponse>("/auth/profile");
-    return response.data as User;
+    return response.data!.user;
   },
 
   // Refresh token

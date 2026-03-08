@@ -333,7 +333,7 @@ function DashboardContent() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                     <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                     <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => v >= 1000000 ? `${(v / 1000000).toFixed(1)}M` : v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v} />
-                    <Tooltip formatter={(value: number) => [formatCurrency(value), "Revenue"]} />
+                    <Tooltip formatter={(value: number | undefined) => [formatCurrency(value ?? 0), "Revenue"]} />
                     <Area type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} fill="url(#revenueGradient)" />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -349,12 +349,12 @@ function DashboardContent() {
               {paymentMethodData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={280}>
                   <PieChart>
-                    <Pie data={paymentMethodData} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={5} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                    <Pie data={paymentMethodData} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={5} dataKey="value" label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}>
                       {paymentMethodData.map((_, index) => (
                         <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                    <Tooltip formatter={(value: number | undefined) => formatCurrency(value ?? 0)} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
@@ -398,7 +398,7 @@ function DashboardContent() {
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                       <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-30} textAnchor="end" height={60} />
                       <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => v >= 1000000 ? `${(v / 1000000).toFixed(1)}M` : v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v} />
-                      <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                      <Tooltip formatter={(value: number | undefined) => formatCurrency(value ?? 0)} />
                       <Legend />
                       <Bar dataKey="collected" stackId="a" fill="#10b981" name="Collected" />
                       <Bar dataKey="pending" stackId="a" fill="#fbbf24" name="Pending" />
