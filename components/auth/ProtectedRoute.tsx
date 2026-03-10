@@ -30,9 +30,9 @@ export function ProtectedRoute({
     return <>{fallback}</>;
   }
 
-  // Not authenticated
+  // Not authenticated - show fallback while redirect completes
   if (!isAuthenticated || !user) {
-    return null;
+    return <>{fallback}</>;
   }
 
   // Check role-based access
