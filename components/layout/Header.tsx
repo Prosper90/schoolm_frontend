@@ -53,7 +53,8 @@ export function Header({ onMenuToggle, isSidebarCollapsed }: HeaderProps) {
     <header
       className={cn(
         "fixed top-0 right-0 z-20 h-16 bg-white border-b border-gray-200 transition-all duration-300",
-        isSidebarCollapsed ? "left-20" : "left-64"
+        "left-0 md:left-64",
+        isSidebarCollapsed && "md:left-20"
       )}
     >
       <div className="h-full px-4 flex items-center justify-between">

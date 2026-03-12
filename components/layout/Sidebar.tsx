@@ -170,10 +170,11 @@ const navItems: NavItem[] = [
 
 interface SidebarProps {
   isCollapsed?: boolean;
-  onToggle?: () => void;
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
-export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
+export function Sidebar({ isCollapsed = false, isMobileOpen = false, onCloseMobile }: SidebarProps) {
   const pathname = usePathname();
   const { user } = useAuthStore();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -200,13 +201,18 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
     <aside
       className={cn(
         "fixed left-0 top-0 z-30 h-screen bg-white border-r border-gray-200 transition-all duration-300",
-        isCollapsed ? "w-20" : "w-64"
+        // Desktop: always visible, collapsible
+        "md:translate-x-0",
+        isCollapsed ? "md:w-20" : "md:w-64",
+        // Mobile: drawer — off-screen by default, slides in when open
+        "w-64",
+        isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       )}
     >
       {/* Logo */}
       <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
         {!isCollapsed && (
-          <Link href="/dashboard" className="flex items-center space-x-2">
+          <Link href="/dashboard" className="flex items-center space-x-2" onClick={onCloseMobile}>
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">S</span>
             </div>
@@ -214,7 +220,7 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
           </Link>
         )}
         {isCollapsed && (
-          <Link href="/dashboard" className="mx-auto">
+          <Link href="/dashboard" className="mx-auto" onClick={onCloseMobile}>
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">S</span>
             </div>
@@ -281,6 +287,7 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
               ) : (
                 <Link
                   href={item.href}
+                  onClick={onCloseMobile}
                   className={cn(
                     "flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                     isActive(item.href)

@@ -5,6 +5,9 @@ import Cookies from "js-cookie";
 import { useAuthStore } from "@/store/authStore";
 import { authApi } from "@/lib/auth";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const HEALTH_URL = API_URL.replace(/\/api$/, "/health");
+
 interface AuthProviderProps {
   children: React.ReactNode;
 }
@@ -34,6 +37,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     initAuth();
   }, [setUser, setLoading]);
+
+  // Keep backend warm — ping /health every 4 minutes to prevent Railway cold starts
+  useEffect(() => {
+    const ping = () => fetch(HEALTH_URL, { method: "GET" }).catch(() => {});
+    ping();
+    const interval = setInterval(ping, 4 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return <>{children}</>;
 }
